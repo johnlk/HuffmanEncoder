@@ -9,7 +9,7 @@ huffman: main.cpp Encoder.o MinHeap.o TreeNode.o
 MinHeap.o: TreeNode.o MinHeap.cpp MinHeap.h 
 	$(COMP) $(CFLAG) MinHeap.cpp
 
-Encoder.o: Encoder.cpp
+Encoder.o: Encoder.h Encoder.cpp
 	$(COMP) $(CFLAG) Encoder.cpp
 
 TreeNode.o: TreeNode.cpp TreeNode.h
