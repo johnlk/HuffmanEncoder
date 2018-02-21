@@ -10,6 +10,7 @@ class TreeNode{
 	public:
 		TreeNode(char value, unsigned int frequency);
 		bool isLeafNode(); // if doesn't have children, would have a char on it
+		void join(TreeNode* left, TreeNode* right);
 		TreeNode* getLeft();
 		TreeNode* getRight();
 		unsigned int getFrequency();
