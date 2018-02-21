@@ -16,8 +16,8 @@ class HuffTree{
 		void makeCharCode(); // stores the code for a character of the tree in char_codes
 		TreeNode* getRoot();
 		char* getCharNode(int);
-		~TreeNode();		
-}
+		~HuffTree();		
+};
 
 
 #endif

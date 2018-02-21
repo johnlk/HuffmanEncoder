@@ -33,7 +33,7 @@ void MinHeap::insert(TreeNode* node){
 }
 
 TreeNode* MinHeap::removeMin(){
-	if(size < 1){return 1;}
+	if(size < 1){return NULL;}
 	size--;
 	//swap top and last value
 	TreeNode *holder = heap[0];
@@ -46,7 +46,7 @@ TreeNode* MinHeap::removeMin(){
 	int rightChild = getRightChild(i);	
 	//checking if child nodes are greater than downheaping node
 	while( (leftChild < size && heap[i]->getFrequency() > heap[leftChild]->getFrequency()) ||
-				(rightChild < size && heap[i]->getFrequency() > heap[rightChidl]->getFrequency() ){
+				(rightChild < size && heap[i]->getFrequency() > heap[rightChild]->getFrequency()) ){
 		if(rightChild >= size || heap[leftChild]->getFrequency() <= heap[rightChild]->getFrequency()){
 			holder = heap[leftChild];
 			heap[leftChild] = heap[i];
@@ -59,6 +59,9 @@ TreeNode* MinHeap::removeMin(){
 		leftChild = getLeftChild(i);
 		rightChild = getRightChild(i);	
 	}
+	holder = heap[size];
+	heap.erase(heap.begin() + size);
+	return holder;
 }
 
 int MinHeap::getSize(){
