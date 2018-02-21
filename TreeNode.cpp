@@ -1,6 +1,6 @@
 #include "TreeNode.h"
 
-TreeNode::TreeNode(unsigned char value, unsigned int frequency){
+TreeNode::TreeNode(char value, unsigned int frequency){
 	this->value = value;
 	this->frequency = frequency;
 	this->left = NULL;
@@ -19,10 +19,10 @@ TreeNode* TreeNode::getRight(){
 	return right;
 }
 
-unsigned TreeNode::getValue(){
+char TreeNode::getValue(){
 	return value;
 }
 
-unsigned TreeNode::getFrequency(){
+unsigned int TreeNode::getFrequency(){
 	return frequency;
 }

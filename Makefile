@@ -6,7 +6,7 @@ all: huffman
 huffman: main.cpp Encoder.o MinHeap.o TreeNode.o
 	$(COMP) -o huffman Encoder.o MinHeap.o TreeNode.o
 
-MinHeap.o: MinHeap.h
+MinHeap.o: TreeNode.o MinHeap.cpp MinHeap.h 
 	$(COMP) $(CFLAG) MinHeap.cpp
 
 Encoder.o: Encoder.cpp
