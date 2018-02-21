@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include "Encoder.h"
 
 using namespace std;
 
@@ -18,7 +19,9 @@ int main(int argc, char** argv){
 	char *outFile = argv[3];
 
 	if(mode == 'e'){
-		cout << "encoding: " << inFile << endl;	
+		Encoder *e = new Encoder(inFile);
+		e->encode();
+		e->writeEncodedFile(outFile);
 	}else if(mode == 'd'){
 		cout << "decoding: " << inFile << endl;
 	}else{
