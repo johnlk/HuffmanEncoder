@@ -3,8 +3,8 @@ CFLAG = -c -g
 
 all: huffman
 
-huffman: main.cpp HuffTree.o MinHeap.o Encoder.o TreeNode.o
-	$(COMP) -o huffman HuffTree.o MinHeap.o Encoder.o TreeNode.o main.cpp
+huffman: main.cpp HuffTree.o MinHeap.o Decoder.o Encoder.o TreeNode.o
+	$(COMP) -o huffman HuffTree.o MinHeap.o Decoder.o Encoder.o TreeNode.o main.cpp
 
 MinHeap.o: TreeNode.o Encoder.o MinHeap.cpp MinHeap.h 
 	$(COMP) $(CFLAG) MinHeap.cpp
@@ -14,6 +14,9 @@ TreeNode.o: TreeNode.cpp TreeNode.h
 
 Encoder.o: TreeNode.o Encoder.h Encoder.cpp
 	$(COMP) $(CFLAG) Encoder.cpp
+
+Decoder.o: TreeNode.o Decoder.h Decoder.cpp
+	$(COMP) $(CFLAG) Decoder.cpp
 
 HuffTree.o: TreeNode.o MinHeap.o HuffTree.h HuffTree.cpp
 	$(COMP) $(CFLAG) HuffTree.cpp

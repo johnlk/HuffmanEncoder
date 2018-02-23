@@ -1,4 +1,3 @@
-#include <iostream>
 #include "HuffTree.h"
 
 using namespace std;
@@ -10,15 +9,15 @@ HuffTree::HuffTree(){
 void HuffTree::buildTree(MinHeap *mh){
 	TreeNode *left;
 	TreeNode *right;
+	//repeatedly pull off the min values and keep re-adding to heap
 	while(mh->getSize() > 2){
 		left = mh->removeMin();
 		right = mh->removeMin();
-		cout << "Left: " << (char)left->getVal() << " Right: " << (char)right->getVal() << endl;
 		TreeNode *internal = new TreeNode(0, left->getFrequency() + right->getFrequency());//internal node
-		cout << "Total Frequency: " << internal->getFrequency() << endl;
 		internal->join(left, right);
 		mh->insert(internal);
 	}
+	//makes sure root holds the correct value
 	if(mh->getSize() == 2){
 		left = mh->removeMin();
 		right = mh->removeMin();

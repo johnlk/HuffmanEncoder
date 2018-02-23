@@ -16,19 +16,10 @@ class Encoder{
 		HuffTree *tree;
 		string file_path;
 	public:
-		//test_file_path is the input (decoded) file
 		Encoder(string file_path); 
-		
-		//Fills up the frequency_table array where frequency_table[i] 
-		//will contain the frequency of char with ASCII code i		
-		void buildFrequencyTable();
-
-		//Builds the min head and run the encoding algorithm
-		void encode();
-
-		//Generates the encoded file and save it as output_file_path
+		void buildFrequencyTable(); //fills array at char value with their frequency
+		void encode();//build min heap, huff tree
 		void writeEncodedFile(string output_file_path);
-
 		~Encoder();
 };
 

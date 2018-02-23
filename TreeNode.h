@@ -12,11 +12,9 @@ class TreeNode{
 		unsigned frequency;
 		unsigned char val;
 	public:
-		
-		//TreeNode();
 		TreeNode(unsigned char val, unsigned frequency);
 
-		//returns true if this node is a leaf node, returns false otherwise
+		//returns true if this node is a leaf node, they have char values
 		bool isLeafNode();
 
 		//puts left as the left child and right as the right child of this node
@@ -25,8 +23,8 @@ class TreeNode{
 		TreeNode * getLeft(); //returns the left child
 		TreeNode * getRight(); //returns the right child
 
-		unsigned getFrequency(); //returns frequency member variable
-		unsigned getVal(); //returns val member variable
+		unsigned getFrequency(); //returns frequency character frequency
+		unsigned getVal(); //returns character value
 
 		~TreeNode(); //destructor
 };

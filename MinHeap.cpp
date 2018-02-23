@@ -1,9 +1,6 @@
-#include <iostream>
-#include <climits>
 #include "MinHeap.h"
 
-//implement the methods in MinHeap.h
-
+//array based min heap
 MinHeap::MinHeap(){
 	size = 0;
 }

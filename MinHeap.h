@@ -4,8 +4,6 @@
 #include "TreeNode.h"
 #include <vector>
 
-using namespace std;
-
 class MinHeap{
 	private:
 		vector<TreeNode*> heap;

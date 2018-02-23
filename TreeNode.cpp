@@ -1,4 +1,3 @@
-#include <iostream>
 #include "TreeNode.h"
 
 TreeNode::TreeNode(unsigned char val, unsigned int freq){
