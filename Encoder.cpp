@@ -1,109 +1,106 @@
 #include <iostream>
 #include "Encoder.h"
 
-Encoder::Encoder(char *filePath){
+Encoder::Encoder(string file_path){
 	unique_chars = 0;
-	this->filePath = filePath;
-	for(int i = 0; i < 256; i++){ // 255 is max byte value
-		frequency_table[i] = 0; // start every byte at 0
+	this->file_path = file_path;
+	for(int i = 0; i < 256; i++){
+		frequency_table[i] = 0;
 	}
 }
 
 void Encoder::buildFrequencyTable(){
-	FILE *inFile = fopen(this->filePath, "r");
-	unsigned int byte = 0;
-	//find the number of bytes in the file
+	FILE *inFile = fopen(file_path.c_str(), "r");
+	unsigned int bit = 0;
 	fseek(inFile, 0L, SEEK_END);
-	long fileSize = ftell(inFile);
+	long fileLength = ftell(inFile);
 	fseek(inFile, 0L, SEEK_SET);
-	//end seeking file size
-
-	//loop through each byte of the file and count occurances
-	for(int i = 0; i < fileSize; i++){
-		fread(&byte, 1, 1, inFile); //store 1 byte once into bit
-		frequency_table[byte]++;
-	}	
+	for(int i = 0; i < fileLength; i++){
+		fread(&bit, 1, 1, inFile);
+		frequency_table[bit]++;
+	}
 	fclose(inFile);
 }
 
 void Encoder::encode(){
-	//build frequency table
-	buildFrequencyTable();
-	//make min heap
+	//frequency table
+	buildFrequencyTable();	
+	//minheap
 	mh = new MinHeap();
 	for(int i = 0; i < 256; i++){
 		if(frequency_table[i] > 0){
-			//cout << "Char: " << (char)i << " Frequency: " << frequency_table[i] << endl;
-			TreeNode *newNode = new TreeNode(i, frequency_table[i]);
-			mh->insert(newNode);
 			unique_chars++;
-		}	
-	}
-	// build huffman tree
-	tree = new HuffTree();
-	tree->buildTree(mh);
-	//generate character codes
-	tree->makeCharCodes();
-}
-
-void Encoder::writeEncodedFile(char* filePath){
-	FILE *inFile = fopen(this->filePath, "r");
-	FILE *outFile = fopen(filePath, "w");
-	//get size of inFile
-	fseek(inFile, 0L, SEEK_END);
-	long inFileSize = ftell(inFile);
-	fseek(inFile, 0L, SEEK_SET);
-	
-	char c;
-	int bit_count = 0;
-	unsigned int byte = unique_chars;	//byte can be multiple bytes, up to 4 according to int
-	//writting the header
-	fwrite(&byte, 2, 1, outFile);
-	for(int i = 0; i < 256; i++){
-		if(frequency_table[i] > 0){
-			//character byte
-			byte = i;
-			fwrite(&byte, 1, 1, outFile);
-			//frequency byte	
-			byte = frequency_table[i];
-			fwrite(&byte, 4, 1, outFile);
-		}	
-	}
-	//end header
-	//start body
-	unsigned int char_byte = 0;
-	for(int i = 0; i < inFileSize; i++){
-		fread(&char_byte, 1, 1, inFile);
-		string byte_str = tree->getCharCode(char_byte);
-		//cout << "char: " << (char)char_byte << " code: " << byte_str << endl;
-		while(byte_str.size() > 0){ // looping bit by bit left to right in the code
-			if(byte_str[0] == '0'){
-				byte <<= 1;	
-			}else{
-				byte <<= 1;
-				byte = byte | 1;
-			}
-			bit_count++;
-			if(bit_count % 8 == 0){
-				fwrite(&byte, 1, 1, outFile);
-				byte = 0;
-			}
-			byte_str = byte_str.substr(1, byte_str.size() - 1);//remove the first char
+			//cout << "Char: " << (char)i << " Frequency: " << frequency_table[i] << endl;
+			TreeNode *node = new TreeNode(i, frequency_table[i]);
+			mh->insert(node);
 		}
 	}
-	//pad with 0's if we have leftover bits that don't make a full byte
-	if(bit_count % 8 != 0){
-		do{
-			byte <<= 1;
-			bit_count++;
-		}while(bit_count % 8 != 0);
-		fwrite(&byte, 1, 1, outFile);	
-	}	
+	//huffman
+	tree = new HuffTree();
+	tree->buildTree(mh);
+	//code for each char
+	tree->generateCodes();
+}
+
+void Encoder::writeEncodedFile(string output_file_path){
+	FILE *inFile = fopen(file_path.c_str(), "r");
+	FILE *outFile = fopen(output_file_path.c_str(), "w");
+	//get size of file
+	fseek(inFile, 0L, SEEK_END);
+	long fileLength = ftell(inFile);
+	fseek(inFile, 0L, SEEK_SET);
+	//reset position
+	char c;
+	int bitCount = 0;
+	unsigned int bit;
+	bit = unique_chars;
+	//start header
+	fwrite(&bit, 2, 1, outFile);	
+	for(int i = 0; i < 256; i++){
+		if(frequency_table[i] > 0){
+			//char byte
+			bit = i;
+			fwrite(&bit, 1, 1, outFile);	
+			//frequency bytes
+			bit = frequency_table[i];
+			fwrite(&bit, 4, 1, outFile);	
+		}
+	}
+	//end header
+	//begin file
+	unsigned int charBit = 0;
+	for(int i = 0; i < fileLength; i++){
+		fread(&charBit, 1, 1, inFile);
+		string bit_str = tree->getCharCode(charBit);
+		//cout << "Char: " << (char)charBit << " Code: " << bit_str << endl;
+		while(bit_str.size() > 0){
+			if(bit_str[0] == '0'){
+				bit <<= 1;
+			}else{
+				bit <<= 1;
+				bit = bit | 1;	
+			}
+			bitCount++;
+			if(bitCount % 8 == 0){//now we can write one byte
+				fwrite(&bit, 1, 1, outFile);	
+				bit = 0;
+			}
+			bit_str = bit_str.substr(1, bit_str.size()-1);
+		}
+	}
+	//padding with 0's
+	if(bitCount % 8 != 0){
+		while(bitCount % 8 != 0){
+			bit <<= 1;
+			bitCount++;
+		}
+		fwrite(&bit, 1, 1, outFile);	
+	}
 	fclose(inFile);
 	fclose(outFile);
 }
 
 Encoder::~Encoder(){
-	delete mh;
 	delete tree;
+	delete mh;
 }

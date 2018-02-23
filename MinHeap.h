@@ -6,19 +6,18 @@
 
 using namespace std;
 
-//this class is for building a min heap of TreeNodes
 class MinHeap{
 	private:
 		vector<TreeNode*> heap;
-		int size;		
+		int size;
 	public:
 		MinHeap();
-		TreeNode* removeMin(); // removes the element of least frequency value, later used by Huff Tree
-		void insert(TreeNode* node);
+		TreeNode * removeMin(); //returns root of heap
+		void insert(TreeNode * val); //adds element to heap
 		int getParent(int);
 		int getLeftChild(int);
 		int getRightChild(int);
-		int getSize(); //size of the min heap
+		int getSize(); //returns size of heap
 		~MinHeap();
 };
 

@@ -5,21 +5,35 @@
 #include "TreeNode.h"
 #include <string>
 
+#define MAXCODELENGTH 256
+#define BYTESIZE 8
+
 using namespace std;
 
 class HuffTree{
 	private:
+		//Add class members and methods	
 		TreeNode *root;
-		string char_codes[256];
+		string codes[MAXCODELENGTH];
 	public:
 		HuffTree();
-		void buildTree(MinHeap* mh); // build tree from min heap
-		void traverseTree(TreeNode* root, string path);//recursive call that helps make char_codes
-		void makeCharCodes(); // stores the code for a character of the tree in char_codes
-		TreeNode* getRoot();
-		string getCharCode(int);
-		~HuffTree();		
-};
 
+		//build a hiffman  tree  give a minheap
+		void buildTree(MinHeap * mh);
+
+		//generate codes by traversing the huffman tree
+		//and store them in an internal data structure (array of strings for example)
+		void generateCodes();
+	
+		void traverseTree(TreeNode *root, string path);
+
+		//returns root of the tree
+		TreeNode * getRoot();
+
+		//returns huffman code from  the ascii code
+		string getCharCode(int c);
+		~HuffTree();
+		
+};
 
 #endif
