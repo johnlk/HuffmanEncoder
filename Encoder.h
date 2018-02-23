@@ -15,7 +15,7 @@ class Encoder{
 		Encoder(char *filePath);
 		void buildFrequencyTable();//builds the frequency table from filePath
 		void encode();
-		void writeEncodedFile(char *outFile);
+		void writeEncodedFile(char *filePath);
 		~Encoder();
 };
 

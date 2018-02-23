@@ -11,7 +11,7 @@ Encoder::Encoder(char *filePath){
 
 void Encoder::buildFrequencyTable(){
 	FILE *inFile = fopen(this->filePath, "r");
-	unsigned int bit = 0;
+	unsigned int byte = 0;
 	//find the number of bytes in the file
 	fseek(inFile, 0L, SEEK_END);
 	long fileSize = ftell(inFile);
@@ -20,8 +20,8 @@ void Encoder::buildFrequencyTable(){
 
 	//loop through each byte of the file and count occurances
 	for(int i = 0; i < fileSize; i++){
-		fread(&bit, 1, 1, inFile); //store 1 byte once into bit
-		frequency_table[bit]++;
+		fread(&byte, 1, 1, inFile); //store 1 byte once into bit
+		frequency_table[byte]++;
 	}	
 	fclose(inFile);
 }
@@ -31,7 +31,7 @@ void Encoder::encode(){
 	buildFrequencyTable();
 	//make min heap
 	mh = new MinHeap();
-	for(int i = 0; i < frequency_table[i]; i++){
+	for(int i = 0; i < 256; i++){
 		if(frequency_table[i] > 0){
 			TreeNode *newNode = new TreeNode(i, frequency_table[i]);
 			mh->insert(newNode);
@@ -45,8 +45,31 @@ void Encoder::encode(){
 	tree->makeCharCodes();
 }
 
-void Encoder::writeEncodedFile(char* outFile){
-
+void Encoder::writeEncodedFile(char* filePath){
+	FILE *inFile = fopen(this->filePath, "r");
+	FILE *outFile = fopen(filePath, "w");
+	//get size of inFile
+	fseek(inFile, 0L, SEEK_END);
+	long inFileSize = ftell(inFile);
+	fseek(inFile, 0L, SEEK_SET);
+	
+	char c;
+	int bit_count = 0;
+	unsigned int byte = unique_chars;	//byte can be multiple bytes, up to 4 according to int
+	//writting the header
+	cout << "Unique chars: " << byte << endl;
+	fwrite(&byte, 2, 1, outFile);
+	for(int i = 0; i < 256; i++){
+		if(frequency_table[i] > 0){
+			//character byte
+			byte = i;
+			fwrite(&byte, 1, 1, outFile);
+			//frequency byte	
+			byte = frequency_table[i];
+			fwrite(&byte, 4, 1, outFile);
+		}	
+	}
+	//end header
 }
 
 Encoder::~Encoder(){
