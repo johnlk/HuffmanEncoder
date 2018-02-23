@@ -1,7 +1,7 @@
 #include <iostream>
 #include "TreeNode.h"
 
-TreeNode::TreeNode(char value, unsigned int frequency){
+TreeNode::TreeNode(unsigned char value, unsigned int frequency){
 	this->value = value;
 	this->frequency = frequency;
 	this->left = NULL;
@@ -25,7 +25,7 @@ TreeNode* TreeNode::getRight(){
 	return right;
 }
 
-char TreeNode::getValue(){
+unsigned char TreeNode::getValue(){
 	return value;
 }
 

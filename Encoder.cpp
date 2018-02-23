@@ -33,6 +33,7 @@ void Encoder::encode(){
 	mh = new MinHeap();
 	for(int i = 0; i < 256; i++){
 		if(frequency_table[i] > 0){
+			//cout << "Char: " << (char)i << " Frequency: " << frequency_table[i] << endl;
 			TreeNode *newNode = new TreeNode(i, frequency_table[i]);
 			mh->insert(newNode);
 			unique_chars++;
@@ -57,7 +58,6 @@ void Encoder::writeEncodedFile(char* filePath){
 	int bit_count = 0;
 	unsigned int byte = unique_chars;	//byte can be multiple bytes, up to 4 according to int
 	//writting the header
-	cout << "Unique chars: " << byte << endl;
 	fwrite(&byte, 2, 1, outFile);
 	for(int i = 0; i < 256; i++){
 		if(frequency_table[i] > 0){
@@ -75,6 +75,7 @@ void Encoder::writeEncodedFile(char* filePath){
 	for(int i = 0; i < inFileSize; i++){
 		fread(&char_byte, 1, 1, inFile);
 		string byte_str = tree->getCharCode(char_byte);
+		//cout << "char: " << (char)char_byte << " code: " << byte_str << endl;
 		while(byte_str.size() > 0){ // looping bit by bit left to right in the code
 			if(byte_str[0] == '0'){
 				byte <<= 1;	
