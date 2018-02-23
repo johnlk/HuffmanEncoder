@@ -70,6 +70,36 @@ void Encoder::writeEncodedFile(char* filePath){
 		}	
 	}
 	//end header
+	//start body
+	unsigned int char_byte = 0;
+	for(int i = 0; i < inFileSize; i++){
+		fread(&char_byte, 1, 1, inFile);
+		string byte_str = tree->getCharCode(char_byte);
+		while(byte_str.size() > 0){ // looping bit by bit left to right in the code
+			if(byte_str[0] == '0'){
+				byte <<= 1;	
+			}else{
+				byte <<= 1;
+				byte = byte | 1;
+			}
+			bit_count++;
+			if(bit_count % 8 == 0){
+				fwrite(&byte, 1, 1, outFile);
+				byte = 0;
+			}
+			byte_str = byte_str.substr(1, byte_str.size() - 1);//remove the first char
+		}
+	}
+	//pad with 0's if we have leftover bits that don't make a full byte
+	if(bit_count % 8 != 0){
+		do{
+			byte <<= 1;
+			bit_count++;
+		}while(bit_count % 8 != 0);
+		fwrite(&byte, 1, 1, outFile);	
+	}	
+	fclose(inFile);
+	fclose(outFile);
 }
 
 Encoder::~Encoder(){
