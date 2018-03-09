@@ -1,11 +1,24 @@
 # HuffmanEncoder
 This program serves to both encode and decode files. Or in layman's terms, compress and decompress files. To use, download 
 git repository then navigate to directory within a terminal or command prompt. Type `make` to constuct the excutable 
-named `huffman`. To compress a file type `huffman -e fileToCompress compressedFileName`. Next to decompress the file type
-`huffman -d compressFileName decompressedFileName`. <br><br>
+named `huffman`.
+
+To compress a file:
+```
+huffman -e fileToCompress compressedFileName
+```
+Next to decompress the file:
+```
+huffman -d compressFileName decompressedFileName
+```
+<br>
 
 You may also add your add this git repository to you PATH which would allow you to compress from any directory.
-Open your `.bash_profile` and add these lines `PATH="~/somePath/HuffManEncoder/:${PATH}"` and next `export PATH`.
+Open your `.bash_profile` and add these lines at the top or bottom of the file:
+```
+PATH="~/somePath/HuffManEncoder/:${PATH}"
+export PATH
+```
 
 # Compression Efficiency
 Testing on a file in the directory titled `big.txt` starting at 7.4MB, it was compressed with `huffman` to create a file
