@@ -11,7 +11,6 @@ Next to decompress the file:
 ```
 huffman -d compressFileName decompressedFileName
 ```
-<br>
 
 You may also add your add this git repository to you PATH which would allow you to compress from any directory.
 Open your `.bash_profile` and add these lines at the top or bottom of the file:
