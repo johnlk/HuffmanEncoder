@@ -1,33 +1,54 @@
 # HuffmanEncoder
-This program serves to both encode and decode files. Or in layman's terms, compress and decompress files. To use, download 
-git repository then navigate to directory within a terminal or command prompt. Type `make` to constuct the excutable 
-named `huffman`.
 
-To compress a file:
+HuffmanEncoder is a program that can be used to compress and decompress files. It utilizes the Huffman coding algorithm for efficient file compression. This README provides an overview of how to use the program and explains the underlying data structures.
+
+## Usage
+
+1. Clone the repository and navigate to the project directory in a terminal or command prompt.
+
+2. Build the executable by running the following command:
+
+```
+make
+```
+
+This will create an executable named `huffman`.
+
+3. To compress a file, use the following command:
+
 ```
 huffman -e fileToCompress compressedFileName
 ```
-Next to decompress the file:
+
+Replace `fileToCompress` with the path to the file you want to compress and `compressedFileName` with the desired name of the compressed file.
+
+4. To decompress a file, use the following command:
+
 ```
-huffman -d compressFileName decompressedFileName
+huffman -d compressedFileName decompressedFileName
 ```
 
-You may also add your add this git repository to you PATH which would allow you to compress from any directory.
-Open your `.bash_profile` and add these lines at the top or bottom of the file:
+Replace `compressedFileName` with the path to the compressed file and `decompressedFileName` with the desired name of the decompressed file.
+
+Note: You can also add the HuffmanEncoder repository to your system's PATH variable, allowing you to execute the `huffman` command from any directory. To do this, open your `.bash_profile` (or equivalent) file and add the following lines at the top or bottom:
+
 ```
-PATH="~/somePath/HuffManEncoder/:${PATH}"
+PATH="~/path/to/HuffmanEncoder/:${PATH}"
 export PATH
 ```
 
-# Compression Efficiency
-Testing on a file in the directory titled `big.txt` starting at 7.4MB, it was compressed with `huffman` to create a file
-only 4.5MB in size. This is a compression of 43.231%. Keep in mind however that this file is particularly large and 
-the compression of smaller files will have less efficiency. This is because the compressed file contains a header allowing
-for the construction of a huffman tree when it comes time to decompress the file.
+## Compression Efficiency
 
-# Data Structures
-When building a huffman tree, it's important to start by creating sub-trees from the least frequent characters 
-in a file. This required I construct a MinHeap that would allow the characters with the smallest frequency at 
-the top and easily removeable. <br><br>
-Beyond a MinHeap, the Huffman Tree was a data type that had to be implemented. It ended up being a binary tree with
-nodes having either 2 or no children. 
+The compression efficiency of HuffmanEncoder depends on the characteristics of the input file. As an example, testing on a file called `big.txt` (starting at 7.4MB), the file was compressed using HuffmanEncoder to a size of only 4.5MB. This represents a compression ratio of 43.231%. However, it's important to note that the compression efficiency may vary for smaller files. The compressed file contains a header that enables the construction of a Huffman tree during decompression.
+
+## Data Structures
+
+HuffmanEncoder relies on the following data structures:
+
+- **MinHeap**: A minimum heap data structure is used to prioritize characters based on their frequency. It ensures that the characters with the smallest frequency are placed at the top and can be easily removed.
+
+- **Huffman Tree**: The Huffman Tree is a binary tree data structure used to encode and decode the compressed data. Each node in the tree represents either a character or an intermediate sub-tree. The Huffman Tree is constructed by combining the least frequent characters until a complete tree is formed.
+
+Please refer to the source code for a more detailed implementation of these data structures.
+
+Feel free to explore the code and experiment with different files for compression and decompression. If you encounter any issues or have suggestions for improvements, please open an issue on the GitHub repository.
